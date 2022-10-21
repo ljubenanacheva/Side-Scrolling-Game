@@ -28,3 +28,6 @@ body{
     color:blanchedalmond;
     text-align: center;
 }
+.hide{
+    display: none;
+}

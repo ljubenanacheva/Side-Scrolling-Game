@@ -9,14 +9,21 @@ document.addEventListener('keydown',onKeyDown);
 document.addEventListener('keyup',onKeyUp);
 
 let keys={};
+let player={
+    x:150,
+    y:100
+};
+let game={
+    speed:2,
+};
 
 function onGameStart(){
    gameStart.classList.add('hide');
 
    const wizard=document.createElement('div');
    wizard.classList.add('wizard');
-   wizard.style.top='200px';
-   wizard.style.left='200px';
+   wizard.style.top=player.y+'px';
+   wizard.style.left=player.x+'px';
    gameArea.appendChild(wizard);
 
    window.requestAnimationFrame(gameAction);
@@ -31,17 +38,21 @@ function onKeyUp(event){
 }
 
 function gameAction(){
-    if(keys.ArrowUp){
+    const wizard=document.querySelector('.wizard');
 
+    if(keys.ArrowUp){
+        player.y-=game.speed;
     }
     if(keys.ArrowDown){
-
+        player.y+=game.speed;
     }
     if(keys.ArrowLeft){
-
+        player.x-=game.speed;
     }
     if(keys.ArrowRight){
-        
+        player.x+=game.speed;
     }
+    wizard.style.top=player.y+'px';
+    wizard.style.left=player.x+'px';
     window.requestAnimationFrame(gameAction);
 }

@@ -11,10 +11,13 @@ document.addEventListener('keyup',onKeyUp);
 let keys={};
 let player={
     x:150,
-    y:100
+    y:100,
+    width:0,
+    height:0
 };
 let game={
     speed:2,
+    movingMultiplier:4,
 };
 
 function onGameStart(){
@@ -25,6 +28,8 @@ function onGameStart(){
    wizard.style.top=player.y+'px';
    wizard.style.left=player.x+'px';
    gameArea.appendChild(wizard);
+   player.width=wizard.offsetWidth;
+   player.height=wizard.offsetHeight;
 
    window.requestAnimationFrame(gameAction);
 }
@@ -40,17 +45,17 @@ function onKeyUp(event){
 function gameAction(){
     const wizard=document.querySelector('.wizard');
 
-    if(keys.ArrowUp){
-        player.y-=game.speed;
+    if(keys.ArrowUp&&player.y>0){
+        player.y-=game.speed*game.movingMultiplier;
     }
-    if(keys.ArrowDown){
-        player.y+=game.speed;
+    if(keys.ArrowDown&&player.y+player.height<gameArea.offsetHeight){
+        player.y+=game.speed*game.movingMultiplier;
     }
-    if(keys.ArrowLeft){
-        player.x-=game.speed;
+    if(keys.ArrowLeft&&player.x>0){
+        player.x-=game.speed*game.movingMultiplier;
     }
-    if(keys.ArrowRight){
-        player.x+=game.speed;
+    if(keys.ArrowRight&&player.x+player.width<gameArea.offsetWidth){
+        player.x+=game.speed*game.movingMultiplier;
     }
     wizard.style.top=player.y+'px';
     wizard.style.left=player.x+'px';

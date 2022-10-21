@@ -19,6 +19,11 @@ let game={
     speed:2,
     movingMultiplier:4,
 };
+let scene={
+    score:0,
+}
+
+const gamePoints=gameScore.querySelector('.points');
 
 function onGameStart(){
    gameStart.classList.add('hide');
@@ -44,6 +49,7 @@ function onKeyUp(event){
 
 function gameAction(){
     const wizard=document.querySelector('.wizard');
+    scene.score++;
     let isInAir=(player.y+player.height)<=gameArea.offsetHeight;
     if(isInAir){
         player.y+=game.speed;
@@ -63,5 +69,7 @@ function gameAction(){
     }
     wizard.style.top=player.y+'px';
     wizard.style.left=player.x+'px';
+
+    gamePoints.textContent=scene.score;
     window.requestAnimationFrame(gameAction);
 }

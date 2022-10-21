@@ -12,3 +12,19 @@ body{
     height: 93vh;
     margin: 0;
 }
+.game-start{
+    position: absolute;
+    width: 30%;
+    background-color: aquamarine;
+    border-radius: 35px;
+    top:150px;
+    left:35%;
+    z-index: 1;
+    text-align: center;
+    padding: 30px;
+}
+.game-score{
+    background-color: rgb(14, 2, 68);
+    color:blanchedalmond;
+    text-align: center;
+}

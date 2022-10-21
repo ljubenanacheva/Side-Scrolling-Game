@@ -44,11 +44,15 @@ function onKeyUp(event){
 
 function gameAction(){
     const wizard=document.querySelector('.wizard');
+    let isInAir=(player.y+player.height)<=gameArea.offsetHeight;
+    if(isInAir){
+        player.y+=game.speed;
+    }
 
     if(keys.ArrowUp&&player.y>0){
         player.y-=game.speed*game.movingMultiplier;
     }
-    if(keys.ArrowDown&&player.y+player.height<gameArea.offsetHeight){
+    if(keys.ArrowDown&&isInAir){
         player.y+=game.speed*game.movingMultiplier;
     }
     if(keys.ArrowLeft&&player.x>0){

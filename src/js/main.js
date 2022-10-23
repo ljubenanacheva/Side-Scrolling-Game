@@ -23,10 +23,12 @@ let game={
     fireBallMultiplier:5,
     fireInterval:1000,
     cloudSpawnInterval:3000,
+    bugSpawnInterval:1000
 };
 let scene={
     score:0,
-    lastCloudSpawn:0
+    lastCloudSpawn:0,
+    lastBugSpawn:0
 }
 
 const gamePoints=gameScore.querySelector('.points');
@@ -74,6 +76,25 @@ function gameAction(timestamp){
         cloud.style.left=cloud.x+'px';
         if(cloud.x+clouds.offsetWidth<=0){
             cloud.parentElement.removeChild(cloud);
+        }
+    });
+
+    if(timestamp-scene.lastBugSpawn>game.bugSpawnInterval+5000*Math.random()){
+        let bug=document.createElement('div');
+        bug.classList.add('bug');
+        bug.x=gameArea.offsetWidth-60;
+        bug.style.left=bug.x+'px';
+        bug.style.top=(gameArea.offsetHeight-60)*Math.random()+'px';
+        gameArea.appendChild(bug);
+        scene.lastBugSpawn=timestamp;
+    }
+
+    let bugs=document.querySelectorAll('.bug');
+    bugs.forEach(bug=>{
+        bug.x-=game.speed*3;
+        bug.style.left=bug.x+'px';
+        if(bug.x+bugs.offsetWidth<=0){
+            bug.parentElement.removeChild(bug);
         }
     });
 

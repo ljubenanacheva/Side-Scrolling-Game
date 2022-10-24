@@ -23,7 +23,8 @@ let game={
     fireBallMultiplier:5,
     fireInterval:1000,
     cloudSpawnInterval:3000,
-    bugSpawnInterval:1000
+    bugSpawnInterval:1000,
+    bugKillBonus:2000
 };
 let scene={
     score:0,
@@ -58,10 +59,6 @@ function onKeyUp(event){
 
 function gameAction(timestamp){
     const wizard=document.querySelector('.wizard');
-
-    scene.score++;
-
-    
 
     if(timestamp-scene.lastCloudSpawn>game.cloudSpawnInterval+20000*Math.random()){
         let cloud=document.createElement('div');
@@ -101,12 +98,6 @@ function gameAction(timestamp){
         }
     });
 
-    bugs.forEach(bug=>{
-        if(isCollision(wizard,bug)){
-            gameOverAction();
-        }
-    })
-
     let isInAir=(player.y+player.height)<=gameArea.offsetHeight;
     if(isInAir){
         player.y+=game.speed;
@@ -141,7 +132,20 @@ function gameAction(timestamp){
         if(fireBall.x+fireBall.offsetWidth>gameArea.offsetWidth){
             fireBall.parentElement.removeChild(fireBall);
         }
-    })
+    });
+
+    bugs.forEach(bug=>{
+        if(isCollision(wizard,bug)){
+            gameOverAction();
+        }
+        fireBalls.forEach(fireBall=>{
+            if(isCollision(fireBall,bug)){
+                scene.score+=game.bugKillBonus;
+                bug.parentElement.removeChild(bug);
+                fireBall.parentElement.removeChild(fireBall);
+            }
+        })
+    });
 
     gamePoints.textContent=scene.score;
     if(scene.isActiveGame){

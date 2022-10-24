@@ -1,7 +1,7 @@
 const gameStart=document.querySelector('.game-start');
 const gameScore=document.querySelector('.game-score');
 const gameArea=document.querySelector('.game-area');
-const gameOver=document.querySelector('game-over');
+const gameOver=document.querySelector('.game-over');
 
 gameStart.addEventListener('click',onGameStart);
 
@@ -28,7 +28,8 @@ let game={
 let scene={
     score:0,
     lastCloudSpawn:0,
-    lastBugSpawn:0
+    lastBugSpawn:0,
+    isActiveGame:true,
 }
 
 const gamePoints=gameScore.querySelector('.points');
@@ -59,6 +60,8 @@ function gameAction(timestamp){
     const wizard=document.querySelector('.wizard');
 
     scene.score++;
+
+    
 
     if(timestamp-scene.lastCloudSpawn>game.cloudSpawnInterval+20000*Math.random()){
         let cloud=document.createElement('div');
@@ -98,6 +101,12 @@ function gameAction(timestamp){
         }
     });
 
+    bugs.forEach(bug=>{
+        if(isCollision(wizard,bug)){
+            gameOverAction();
+        }
+    })
+
     let isInAir=(player.y+player.height)<=gameArea.offsetHeight;
     if(isInAir){
         player.y+=game.speed;
@@ -135,7 +144,9 @@ function gameAction(timestamp){
     })
 
     gamePoints.textContent=scene.score;
-    window.requestAnimationFrame(gameAction);
+    if(scene.isActiveGame){
+        window.requestAnimationFrame(gameAction);
+    }
 }
 
 function addFireball(player){
@@ -145,4 +156,19 @@ function addFireball(player){
     fireBall.x=player.x+player.width;
     fireBall.style.left=fireBall.x+'px';
     gameArea.appendChild(fireBall);
+}
+
+function isCollision(firstElement,secondElement){
+    let firstRect=firstElement.getBoundingClientRect();
+    let secondRect=secondElement.getBoundingClientRect();
+
+    return !(firstRect.top>secondRect.bottom||
+        firstRect.bottom<secondRect.top||
+        firstRect.right<secondRect.left||
+        firstRect.left>secondRect.right);
+}
+
+function gameOverAction(){
+    scene.isActiveGame=false;
+    gameOver.classList.remove('hide');
 }
